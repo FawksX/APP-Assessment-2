@@ -19,6 +19,11 @@ Menu::Menu(const std::string &filePath) {
 
     while (std::getline(file, line)) {
         std::istringstream iss(line);
+
+        while(std::getline(iss, line, ',')) {
+            std::cout << line << std::endl;
+        }
+
         char itemType;
         std::string name;
         double price, calories;
