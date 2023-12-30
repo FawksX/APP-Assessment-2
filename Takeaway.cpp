@@ -23,10 +23,12 @@ Good luck!
 
 using namespace std;
 
-int main()
-{
+int main() {
     string userCommand;
-    vector <string> parameters;
+    vector<string> parameters;
+
+    // list all files in current directory
+    system("dir");
 
     // Create a menu object from a CSV file
     Menu menu = Menu("menu.csv");
@@ -34,45 +36,67 @@ int main()
     // Create an order object
     Order order = Order();
 
-    while (userCommand != "exit")
-    {
+    std::cout << "Welcome to the Takeaway Ordering System! Type `help` to start!" << std::endl;
+
+    while (userCommand != "exit") {
         getline(cin, userCommand);
-        char* cstr = new char[userCommand.length() + 1];
+        char *cstr = new char[userCommand.length() + 1];
         strcpy(cstr, userCommand.c_str());
 
-        char* token;
+        char *token;
         token = strtok(cstr, " ");
 
-        while (token != NULL)
-        {
+        while (token != NULL) {
             parameters.push_back(token);
             token = strtok(NULL, " ");
         }
 
         string command = parameters[0];
+        parameters.erase(parameters.begin());
 
         if (command.compare("menu") == 0) {
             cout << menu.toString();
-        }
-        else if (command.compare("add") == 0)
-        {
-            Item* choice; // you need to instantiate this using the menu object!
-            order.add(choice);
+        } else if (command.compare("add") == 0) {
 
-            // You may also wish to implement the ability to add multiple items at once!
+            // find out how many items have been listed in the arguments and add them to the order
             // e.g. add 1 5 9
-        }
-        else if (command.compare("remove") == 0)
-        {
 
-        }
-        else if (command.compare("checkout") == 0)
-        {
+            // todo --> add in something where if no parameters don't add anything and show an error
 
-        }
-        else if (command.compare("help") == 0)
-        {
+            for (const string &parameter: parameters) {
+                Item *choice = menu.getItem(stoi(parameter));
+                std::cout << "Adding " << choice->getName() << " to order." << std::endl;
+                order.add(choice);
+            }
 
+        } else if (command.compare("remove") == 0) {
+
+            // todo --> add in something where if no parameters don't remove anything and show an error
+
+            for (const string &parameter: parameters) {
+                int position = stoi(parameter);
+                Item *choice = menu.getItem(position);
+                std::cout << "Removing " << choice->getName() << " from order." << std::endl;
+                order.remove(position);
+            }
+
+        } else if (command.compare("checkout") == 0) {
+
+            std::cout << order.toString() << std::endl;
+            std::cout << "\n" << "Printing Receipt to receipt.txt!" << std::endl;
+            // make it so they can choose to print or if they don't want to print it doesn't print
+            order.printReceipt();
+
+        } else if (command.compare("help") == 0) {
+            cout << "The available commands are:" << "\n" <<
+                    "menu - Displays the Takeaway Menu." << "\n" <<
+                    "add [INDEX] - Adds an Item to the Order." << "\n" <<
+                    "remove [INDEX] - Removes an Item from the Order." << "\n" <<
+                    "checkout - Displays your Total Order and prints a receipt." << "\n" <<
+                    "help - Opens this menu." << "\n" <<
+                    "exit - Leave the program." << endl;
+        } else {
+            cout << "Unknown command. Type 'help' for a list of available commands." << endl;
         }
 
         parameters.clear();
