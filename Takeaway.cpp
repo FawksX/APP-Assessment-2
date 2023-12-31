@@ -20,10 +20,14 @@ Good luck!
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <windows.h>
 
 using namespace std;
 
 int main() {
+    // todo -> better way for utf8?
+    SetConsoleOutputCP(CP_UTF8);
+
     string userCommand;
     vector<string> parameters;
 
@@ -39,6 +43,9 @@ int main() {
     std::cout << "Welcome to the Takeaway Ordering System! Type `help` to start!" << std::endl;
 
     while (userCommand != "exit") {
+
+        std::cout << "\n" << "Enter a command: ";
+
         getline(cin, userCommand);
         char *cstr = new char[userCommand.length() + 1];
         strcpy(cstr, userCommand.c_str());

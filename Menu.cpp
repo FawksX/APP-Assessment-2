@@ -11,6 +11,7 @@
 #include <sstream>
 #include <iostream>
 #include <unordered_map>
+#include <functional>
 
 Menu::Menu(const std::string &filePath) {
 
@@ -20,29 +21,34 @@ Menu::Menu(const std::string &filePath) {
     while (std::getline(file, line)) {
         std::istringstream iss(line);
 
+        std::vector<std::string> itemResult;
         while(std::getline(iss, line, ',')) {
-            std::cout << line << std::endl;
+            itemResult.push_back(line);
         }
 
-        char itemType;
-        std::string name;
-        double price, calories;
-        iss >> itemType >> name >> price >> calories;
-
-        std::cout << "DEBUG: NAME" << name << std::endl;
+        std::string itemType = itemResult[0];
+        std::string name = itemResult[1];
+        double price = std::stod(itemResult[2]);
+        double calories = std::stod(itemResult[3]);
 
         Item* newItem;
 
-        if(itemType == 'm') {
+        if(itemType == "m") {
             newItem = createMainCourse(name, price, calories);
-        } else if(itemType == 'a') {
-            bool shareable, twoForOne;
-            iss >> shareable >> twoForOne;
+        } else if(itemType == "a") {
+
+            bool shareable = itemResult[4] == "y";
+            bool twoForOne = itemResult[5] == "y";
+
             newItem = createAppetiser(name, price, calories, shareable, twoForOne);
-        } else if(itemType == 'b') {
-            double abv, volume;
-            iss >> abv >> volume;
+        } else if(itemType == "b") {
+
+            double volume = std::stod(itemResult[6]);
+            double abv = std::stod(itemResult[7]);
+
             newItem = createBeverage(name, price, calories, abv, volume);
+        } else {
+            std::cerr << "Unsupported item type: " << itemType << std::endl;
         }
 
         if(newItem) {
@@ -53,49 +59,6 @@ Menu::Menu(const std::string &filePath) {
 
 // Destroyed in ItemList... no need to worry for now
 Menu::~Menu() = default;
-
-Item *Menu::createItem(char itemType, const std::string &itemDetails) {
-
-    switch (itemType) {
-        case 'a': { // Appetizer
-
-            // Extract item details from the csv file, removing commas and whitespace
-
-            std::string name;
-            double price, calories;
-            bool shareable, twoForOne;
-
-            return new Appetiser(name, calories, price, shareable, twoForOne);
-        }
-
-        case 'm': { // Main Course
-            std::string name;
-            double price, calories;
-
-            std::cout << itemDetails << std::endl;
-
-            std::istringstream iss(itemDetails);
-            iss >> name >> price >> calories;
-
-            return new MainCourse(name, calories, price);
-        }
-
-        case 'b': { // Beverage
-            std::string name;
-            double calories, price, volume, abv;
-
-            std::istringstream iss(itemDetails);
-            iss >> name >> calories >> price >> volume >> abv;
-
-            return new Beverage(name, calories, price, volume, abv);
-        }
-
-        default:
-            // Handle unsupported item type
-            std::cerr << "Unsupported item type: " << itemType << std::endl;
-            return nullptr;
-    }
-}
 
 std::string Menu::toString() const {
 
@@ -134,7 +97,7 @@ std::string Menu::toString() const {
         }
 
         for (const Item *item: entry.second) {
-            result << item->getName() << "\n";
+            result << item->toString() << "\n";
         }
 
     }

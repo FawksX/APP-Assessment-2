@@ -22,6 +22,7 @@ public:
 
     ~MainCourse();
 
+    std::string toString() const override;
 };
 
 

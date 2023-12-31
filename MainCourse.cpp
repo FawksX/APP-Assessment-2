@@ -15,3 +15,7 @@ MainCourse::MainCourse(
 MainCourse::MainCourse(const MainCourse &other) = default;
 
 MainCourse::~MainCourse() = default;
+
+std::string MainCourse::toString() const {
+    return getName() + ": £" + parseNumber(getPrice()) + ", " + parseNumber(getCalories()) + " cal";
+}

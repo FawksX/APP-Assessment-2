@@ -22,8 +22,6 @@ public:
     Item* getItem(int position) const;
 
 private:
-    // Private helper function to create a menu item based on the type
-    static Item* createItem(char itemType, const std::string &itemDetails);
 
     static Item* createMainCourse(const std::string& name, double price, double calories);
 
@@ -31,7 +29,6 @@ private:
 
     static Item* createBeverage(const std::string& name, double price, double calories, double abv, double volume);
 
-    // Other private helper functions as needed
 };
 
 

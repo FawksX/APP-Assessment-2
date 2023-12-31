@@ -2,6 +2,9 @@
 // Created by olive on 24/12/2023.
 //
 
+#include <sstream>
+#include <iomanip>
+#include <iostream>
 #include "Item.h"
 
 Item::Item(
@@ -24,4 +27,12 @@ double Item::getCalories() const {
 
 double Item::getPrice() const {
     return price;
+}
+
+std::string Item::parseNumber(double num) {
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(2) << num;
+    std::string s = stream.str();
+    std::cout << "DEBUG: ROUNDING " << s << std::endl;
+    return s;
 }

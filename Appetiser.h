@@ -43,6 +43,8 @@ public:
      */
     bool isTwoForOne() const;
 
+    std::string toString() const override;
+
 };
 
 

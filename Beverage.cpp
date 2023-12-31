@@ -25,3 +25,18 @@ double Beverage::getAbv() const {
 double Beverage::getVolume() const {
     return volume;
 }
+
+std::string Beverage::toString() const {
+    std::string string =
+            getName() + ": £" + parseNumber(getPrice()) + ", " +
+            parseNumber(getCalories()) + " cal (" +
+            parseNumber(getVolume()) + "ml";
+
+    if (getAbv() > 0) {
+        string += ", " + parseNumber(getAbv()) + "% abv";
+    } else {
+        string += ")";
+    }
+
+    return string;
+}

@@ -35,6 +35,8 @@ public:
 
     double getVolume() const;
 
+    std::string toString() const override;
+
 };
 
 

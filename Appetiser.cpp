@@ -25,3 +25,17 @@ bool Appetiser::isShareable() const {
 bool Appetiser::isTwoForOne() const {
     return twoForOne;
 }
+
+std::string Appetiser::toString() const {
+    std::string string = getName() + ": £" + parseNumber(getPrice()) + ", " + parseNumber(getCalories()) + " cal";
+
+    if (isShareable()) {
+        string += " (shareable) ";
+    }
+
+    if (isTwoForOne()) {
+        string += " (2-4-1)";
+    }
+
+    return string;
+}

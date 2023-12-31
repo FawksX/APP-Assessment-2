@@ -45,6 +45,10 @@ public:
      */
     double getPrice() const;
 
+    virtual std::string toString() const = 0;
+
+    static std::string parseNumber(double num);
+
 };
 
 #endif //APP_ASSESSMENT_2_ITEM_H
