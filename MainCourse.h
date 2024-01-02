@@ -20,9 +20,11 @@ public:
 
     MainCourse(const MainCourse &other);
 
-    ~MainCourse();
+    ~MainCourse() override;
 
-    std::string toString() const override;
+    [[nodiscard]] std::string toString() const override;
+
+    ItemType getType() const override;
 };
 
 

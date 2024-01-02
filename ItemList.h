@@ -17,7 +17,7 @@ public:
 
     ~ItemList();
 
-    virtual std::string toString() const = 0;
+    [[nodiscard]] virtual std::string toString() const = 0;
 
 protected:
     // Vector of pointers to instances of the Item class

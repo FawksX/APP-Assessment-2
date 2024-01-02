@@ -6,6 +6,7 @@
 #define APP_ASSESSMENT_2_ITEM_H
 
 #include <string>
+#include "ItemType.h"
 
 /**
  * @brief Represents any takeaway item.
@@ -20,7 +21,7 @@ private:
 public:
 
     Item(
-            const std::string& itemName,
+            std::string  itemName,
             double itemCalories,
             double itemPrice
     );
@@ -31,23 +32,27 @@ public:
      * @brief Gets the name of the takeaway item
      * @return The name of the item
      */
-    std::string getName() const;
+    [[nodiscard]] std::string getName() const;
 
     /**
      * @brief Gets the calories of the takeaway item
      * @return The calories of the takeaway item
      */
-    double getCalories() const;
+    [[nodiscard]] double getCalories() const;
 
     /**
      * @brief Gets the price of the takeaway item
      * @return The price of the takeaway item
      */
-    double getPrice() const;
+    [[nodiscard]] double getPrice() const;
 
-    virtual std::string toString() const = 0;
+    [[nodiscard]] virtual std::string toString() const = 0;
 
-    static std::string parseNumber(double num);
+    bool operator>(const Item& other) const;
+
+    bool operator<(const Item& other) const;
+
+    virtual ItemType getType() const = 0;
 
 };
 

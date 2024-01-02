@@ -4,8 +4,11 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iostream>
+#include <limits>
 #include "Order.h"
 #include "Appetiser.h"
+#include "Util.h"
 
 Order::Order() = default;
 
@@ -14,12 +17,14 @@ Order::~Order() = default;
 std::string Order::toString() const {
     std::string orderString;
 
-    for (Item *item: itemList) {
-        orderString += item->getName() + "- " + std::to_string(item->getPrice()) + "\n";
+    orderString += "Order:\n";
+
+    for(int i = 0; i < itemList.size(); i++) {
+        orderString += std::to_string(i + 1) + ". " + itemList[i]->toString() + "\n";
     }
 
-    orderString += "Savings: £" + std::to_string(calculateSavings()) + "\n";
-    orderString += "Total: £" + std::to_string(calculateTotal()) + "\n";
+    orderString += "\nSavings: £" + Util::parseNumber(calculateSavings()) + "\n";
+    orderString += "Total: £" + Util::parseNumber(calculateTotal()) + "\n";
 
     return orderString;
 }
@@ -50,7 +55,7 @@ double Order::calculateTotal() const {
 
     // Order the twoForOneItems by price
     std::sort(twoForOneItems.begin(), twoForOneItems.end(), [](Item *a, Item *b) {
-        return a->getPrice() < b->getPrice();
+        return a > b; // most expensive first
     });
 
     // Calculate how many two-for-one offers apply, and add the price of the expensive items to the total
@@ -100,6 +105,10 @@ void Order::remove(int position) {
     itemList.erase(itemList.begin() + position);
 }
 
-Item* Order::getItem(int position) const {
-    return itemList[position - 1];
+Item *Order::getItem(int position) const {
+    if (position - 1 < itemList.size()) {
+        return itemList[position - 1];
+    } else {
+        return nullptr;
+    }
 }

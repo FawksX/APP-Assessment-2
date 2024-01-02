@@ -29,13 +29,15 @@ public:
 
     Beverage(const Beverage &other);
 
-    ~Beverage();
+    ~Beverage() override;
 
-    double getAbv() const;
+    [[nodiscard]] double getAbv() const;
 
-    double getVolume() const;
+    [[nodiscard]] double getVolume() const;
 
-    std::string toString() const override;
+    [[nodiscard]] std::string toString() const override;
+
+    ItemType getType() const override;
 
 };
 

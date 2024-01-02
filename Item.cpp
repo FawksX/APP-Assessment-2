@@ -5,13 +5,14 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
+#include <utility>
 #include "Item.h"
 
 Item::Item(
-        const std::string &itemName,
+        std::string itemName,
         double itemCalories,
         double itemPrice
-) : name(itemName), calories(itemCalories), price(itemPrice) {
+) : name(std::move(itemName)), calories(itemCalories), price(itemPrice) {
 
 };
 
@@ -29,10 +30,10 @@ double Item::getPrice() const {
     return price;
 }
 
-std::string Item::parseNumber(double num) {
-    std::stringstream stream;
-    stream << std::fixed << std::setprecision(2) << num;
-    std::string s = stream.str();
-    std::cout << "DEBUG: ROUNDING " << s << std::endl;
-    return s;
+bool Item::operator>(const Item &other) const {
+    return price > other.price;
+}
+
+bool Item::operator<(const Item &other) const {
+    return price < other.price;
 }

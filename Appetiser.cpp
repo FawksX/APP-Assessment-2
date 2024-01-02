@@ -3,6 +3,7 @@
 //
 
 #include "Appetiser.h"
+#include "Util.h"
 
 Appetiser::Appetiser(
         const std::string &itemName,
@@ -27,7 +28,7 @@ bool Appetiser::isTwoForOne() const {
 }
 
 std::string Appetiser::toString() const {
-    std::string string = getName() + ": £" + parseNumber(getPrice()) + ", " + parseNumber(getCalories()) + " cal";
+    std::string string = getName() + ": £" + Util::parseNumber(getPrice()) + ", " + Util::parseNumber(getCalories()) + " cal";
 
     if (isShareable()) {
         string += " (shareable) ";
@@ -38,4 +39,8 @@ std::string Appetiser::toString() const {
     }
 
     return string;
+}
+
+ItemType Appetiser::getType() const {
+    return ItemType::APPETISER;
 }

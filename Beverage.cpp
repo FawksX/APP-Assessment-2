@@ -3,6 +3,7 @@
 //
 
 #include "Beverage.h"
+#include "Util.h"
 
 Beverage::Beverage(
         const std::string &itemName,
@@ -27,16 +28,22 @@ double Beverage::getVolume() const {
 }
 
 std::string Beverage::toString() const {
+
     std::string string =
-            getName() + ": £" + parseNumber(getPrice()) + ", " +
-            parseNumber(getCalories()) + " cal (" +
-            parseNumber(getVolume()) + "ml";
+            getName() + ": £" + Util::parseNumber(getPrice()) + ", " +
+            Util::parseNumber(getCalories()) + " cal (" +
+            Util::parseNumber(getVolume()) + "ml";
 
     if (getAbv() > 0) {
-        string += ", " + parseNumber(getAbv()) + "% abv";
-    } else {
-        string += ")";
+        string += ", " + Util::parseNumber(getAbv()) + "% abv";
     }
 
+    string += ")";
+
+
     return string;
+}
+
+ItemType Beverage::getType() const {
+    return ItemType::BEVERAGE;
 }

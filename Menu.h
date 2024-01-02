@@ -11,15 +11,17 @@
 class Menu : public ItemList {
 public:
     // Constructor that takes a file path to load the menu
-    Menu(const std::string& filePath);
+    explicit Menu(const std::string& filePath);
 
     // Destructor
     ~Menu();
 
     // Function to display the menu
-    std::string toString() const override;
+    [[nodiscard]] std::string toString() const override;
 
-    Item* getItem(int position) const;
+    [[nodiscard]] Item* getItem(int position) const;
+
+    void sortByPrice(bool ascending = true);
 
 private:
 

@@ -17,4 +17,7 @@ add_executable(APP_Assessment_2 Takeaway.cpp
         Menu.cpp
         Menu.h
         Order.cpp
-        Order.h)
+        Order.h
+        Util.cpp
+        Util.h
+        ItemType.h)

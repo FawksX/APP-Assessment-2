@@ -22,7 +22,7 @@ Menu::Menu(const std::string &filePath) {
         std::istringstream iss(line);
 
         std::vector<std::string> itemResult;
-        while(std::getline(iss, line, ',')) {
+        while (std::getline(iss, line, ',')) {
             itemResult.push_back(line);
         }
 
@@ -31,17 +31,17 @@ Menu::Menu(const std::string &filePath) {
         double price = std::stod(itemResult[2]);
         double calories = std::stod(itemResult[3]);
 
-        Item* newItem;
+        Item *newItem = nullptr;
 
-        if(itemType == "m") {
+        if (itemType == "m") {
             newItem = createMainCourse(name, price, calories);
-        } else if(itemType == "a") {
+        } else if (itemType == "a") {
 
             bool shareable = itemResult[4] == "y";
             bool twoForOne = itemResult[5] == "y";
 
             newItem = createAppetiser(name, price, calories, shareable, twoForOne);
-        } else if(itemType == "b") {
+        } else if (itemType == "b") {
 
             double volume = std::stod(itemResult[6]);
             double abv = std::stod(itemResult[7]);
@@ -51,10 +51,16 @@ Menu::Menu(const std::string &filePath) {
             std::cerr << "Unsupported item type: " << itemType << std::endl;
         }
 
-        if(newItem) {
+        if (newItem) {
             itemList.push_back(newItem);
         }
     }
+
+    // Order the list by Appetisers, Main Courses, Beverages
+    std::sort(itemList.begin(), itemList.end(), [](Item *a, Item *b) {
+        return a->getType() < b->getType();
+    });
+
 }
 
 // Destroyed in ItemList... no need to worry for now
@@ -64,60 +70,69 @@ std::string Menu::toString() const {
 
     std::ostringstream result;
 
-    // Map to store items by type
-    std::unordered_map<char, std::vector<Item *>> itemsByType;
+    // Item list is sorted appetisers, main courses, beverages, print out the list and insert headings when the type changes
+    result << "Menu:\n";
 
-    // Organize items by type
-    for (Item *item: itemList) {
-        char itemType = 'u'; // 'u' for unknown type
-        if (dynamic_cast<Appetiser *>(item)) {
-            itemType = 'a';
-        } else if (dynamic_cast<MainCourse *>(item)) {
-            itemType = 'm';
-        } else if (dynamic_cast<Beverage *>(item)) {
-            itemType = 'b';
-        }
-        itemsByType[itemType].push_back(item);
-    }
+    std::string currentType;
 
-    // Create a formatted string
-    for (const auto &entry: itemsByType) {
-        switch (entry.first) {
-            case 'a':
-                result << "Appetizers:\n";
-                break;
-            case 'm':
+    for (int i = 0; i < itemList.size(); i++) {
+        Item *item = itemList[i];
+
+        if (auto *t = dynamic_cast<Appetiser *>(item)) {
+            if (currentType != "Appetisers") {
+                result << "\nAppetisers:\n";
+                currentType = "Appetisers";
+            }
+        } else if (auto *t = dynamic_cast<MainCourse *>(item)) {
+            if (currentType != "Main Courses") {
                 result << "\nMain Courses:\n";
-                break;
-            case 'b':
+                currentType = "Main Courses";
+            }
+        } else if (auto *t = dynamic_cast<Beverage *>(item)) {
+            if (currentType != "Beverages") {
                 result << "\nBeverages:\n";
-                break;
-            default:
-                continue;
+                currentType = "Beverages";
+            }
         }
 
-        for (const Item *item: entry.second) {
-            result << item->toString() << "\n";
-        }
-
+        result << i + 1 << ". " << item->toString() << "\n";
     }
 
     return result.str();
 
 }
 
-Item *Menu::getItem(int position) const {
-    return itemList[position - 1];
+void Menu::sortByPrice(bool ascending) {
+    auto compareByCategoryAndPrice = [ascending](Item *a, Item *b) {
+
+        // first ensure we aren't going to swap the categories, then sort by price
+        if (a->getType() == b->getType()) {
+            return ascending ? (*a < *b) : (*a > *b);
+        } else {
+            return false; // don't swap categories
+        }
+
+    };
+
+    std::sort(itemList.begin(), itemList.end(), compareByCategoryAndPrice);
 }
 
-Item *Menu::createMainCourse(const std::string& name, double price, double calories) {
+Item *Menu::getItem(int position) const {
+    if (position - 1 < itemList.size()) {
+        return itemList[position - 1];
+    } else {
+        return nullptr;
+    }
+}
+
+Item *Menu::createMainCourse(const std::string &name, double price, double calories) {
     return new MainCourse(name, calories, price);
 }
 
-Item *Menu::createAppetiser(const std::string& name, double price, double calories, bool shareable, bool twoForOne) {
+Item *Menu::createAppetiser(const std::string &name, double price, double calories, bool shareable, bool twoForOne) {
     return new Appetiser(name, calories, price, shareable, twoForOne);
 }
 
-Item *Menu::createBeverage(const std::string& name, double price, double calories, double abv, double volume) {
+Item *Menu::createBeverage(const std::string &name, double price, double calories, double abv, double volume) {
     return new Beverage(name, calories, price, abv, volume);
 }

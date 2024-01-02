@@ -29,21 +29,23 @@ public:
 
     Appetiser(const Appetiser &other);
 
-    ~Appetiser();
+    ~Appetiser() override;
 
     /**
      * @brief Gets if the Appetiser is shareable
      * @return true if the appetiser is shareable, otherwise false
      */
-    bool isShareable() const;
+    [[nodiscard]] bool isShareable() const;
 
     /**
      * @brief Get if the Appetiser is apart of a two-for-one deal
      * @return true if the appetiser has a two-for-one deal, otherwise false
      */
-    bool isTwoForOne() const;
+    [[nodiscard]] bool isTwoForOne() const;
 
-    std::string toString() const override;
+    [[nodiscard]] std::string toString() const override;
+
+    ItemType getType() const override;
 
 };
 

@@ -21,6 +21,7 @@ Good luck!
 #include <vector>
 #include <cstring>
 #include <windows.h>
+#include <limits>
 
 using namespace std;
 
@@ -61,47 +62,126 @@ int main() {
         string command = parameters[0];
         parameters.erase(parameters.begin());
 
-        if (command.compare("menu") == 0) {
-            cout << menu.toString();
-        } else if (command.compare("add") == 0) {
+        if (command == "menu") {
 
-            // find out how many items have been listed in the arguments and add them to the order
-            // e.g. add 1 5 9
+            cout << "1. Display menu\n2. Sort menu by price (ascending)\n3. Sort menu by price (descending)\n";
+            int option;
 
-            // todo --> add in something where if no parameters don't add anything and show an error
+            try {
+                cin >> option;
+            } catch (const std::invalid_argument &e) {
+                cout << "Invalid option. Returning to main menu!\n";
+                continue;
+            }
+
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear buffer
+
+            switch (option) {
+                case 1:
+                    // do nothing - Executed below, just for intuitiveness
+                    break;
+                case 2:
+                    menu.sortByPrice(true);
+                    cout << "Menu sorted by price in ascending order:\n" << menu.toString();
+                    break;
+                case 3:
+                    menu.sortByPrice(false);
+                    cout << "Menu sorted by price in descending order:\n" << menu.toString();
+                    break;
+                default:
+                    cout << "Invalid option. Returning to main menu!\n";
+                    break;  // Repeat the loop for a valid option
+            }
+
+            cout << menu.toString() << endl;
+
+        } else if (command == "add") {
+
+            if (parameters.empty()) {
+                cout << "Invalid Arguments! please use add <number> to add to your order!" << endl;
+                cout << "Example: add 1 5 9" << endl;
+                continue;
+            }
 
             for (const string &parameter: parameters) {
-                Item *choice = menu.getItem(stoi(parameter));
+
+                int position;
+                try {
+                    position = stoi(parameter);
+                } catch (const std::invalid_argument &e) {
+                    cout << parameter << " is not a valid number! Skipping...\n";
+                    continue;
+                }
+
+                Item *choice = menu.getItem(position);
+
+                if (choice == nullptr) {
+                    cout << "Invalid Item! Please choose a valid item from the menu!" << endl;
+                    continue;
+                }
+
                 std::cout << "Adding " << choice->getName() << " to order." << std::endl;
                 order.add(choice);
             }
 
-        } else if (command.compare("remove") == 0) {
+        } else if (command == "remove") {
 
-            // todo --> add in something where if no parameters don't remove anything and show an error
+            if (parameters.empty()) {
+                cout << "Invalid Arguments! please use remove <number> to remove to your order!" << endl;
+                cout << "Example: remove 1 5 9" << endl;
+                continue;
+            }
 
             for (const string &parameter: parameters) {
-                int position = stoi(parameter);
-                Item *choice = menu.getItem(position);
+
+                int position;
+                try {
+                    position = stoi(parameter);
+                } catch (const std::invalid_argument &e) {
+                    cout << parameter << " is not a valid number! Skipping...\n";
+                    continue;
+                }
+
+                Item *choice = order.getItem(position);
+
+                if (choice == nullptr) {
+                    cout << "Invalid Item! Please choose a valid item from the order!" << endl;
+                    continue;
+                }
+
                 std::cout << "Removing " << choice->getName() << " from order." << std::endl;
                 order.remove(position);
             }
 
-        } else if (command.compare("checkout") == 0) {
+        } else if (command == "checkout") {
 
             std::cout << order.toString() << std::endl;
-            std::cout << "\n" << "Printing Receipt to receipt.txt!" << std::endl;
-            // make it so they can choose to print or if they don't want to print it doesn't print
-            order.printReceipt();
 
-        } else if (command.compare("help") == 0) {
+            char response;
+            std::cout << "Do you want to place your order? Type 'y' to confirm, or 'n' to modify: ";
+            std::cin >> response;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear buffer
+
+            if (response == 'y' || response == 'Y') {
+                std::cout << "\nPrinting Receipt to receipt.txt!" << std::endl;
+                order.printReceipt();
+            } else if (response == 'n' || response == 'N') {
+                std::cout << "\nReturning to menu!" << std::endl;
+            }
+
+        } else if (command == "order") {
+            std::cout << order.toString() << std::endl;
+        } else if (command == "help") {
             cout << "The available commands are:" << "\n" <<
-                    "menu - Displays the Takeaway Menu." << "\n" <<
-                    "add [INDEX] - Adds an Item to the Order." << "\n" <<
-                    "remove [INDEX] - Removes an Item from the Order." << "\n" <<
-                    "checkout - Displays your Total Order and prints a receipt." << "\n" <<
-                    "help - Opens this menu." << "\n" <<
-                    "exit - Leave the program." << endl;
+                 "menu - Displays the Takeaway Menu." << "\n" <<
+                 "add <index> - Adds an Item to the Order." << "\n" <<
+                 "remove <index> - Removes an Item from the Order." << "\n" <<
+                 "checkout - Displays your Total Order and prints a receipt." << "\n" <<
+                 "order - Displays your current Order." << "\n" <<
+                 "help - Opens this menu." << "\n" <<
+                 "exit - Leave the program." << endl;
+        } else if (command == "exit") {
+            // prevention of unknown command error
         } else {
             cout << "Unknown command. Type 'help' for a list of available commands." << endl;
         }

@@ -19,21 +19,21 @@ public:
      * @brief Displays the items in the order, along with the total price and the savings made.
      * @return
      */
-    std::string toString() const override;
+    [[nodiscard]] std::string toString() const override;
 
     /**
      * @brief Calculates the total price of the order, respecting twoForOne offers in the order.
      * @return
      */
-    double calculateTotal() const;
+    [[nodiscard]] double calculateTotal() const;
 
-/**
+    /**
      * @brief Calculates the raw total of the order, excluding savings
      * @return
      */
-    double calculateRawTotal() const;
+    [[nodiscard]] double calculateRawTotal() const;
 
-    double calculateSavings() const;
+    [[nodiscard]] double calculateSavings() const;
 
     /**
      * @brief Prints the receipt of the order to receipt.txt, displaying total and savings in the following order:
@@ -47,7 +47,7 @@ public:
 
     void remove(int position);
 
-    Item* getItem(int position) const;
+    [[nodiscard]] Item* getItem(int position) const;
 
 };
 
