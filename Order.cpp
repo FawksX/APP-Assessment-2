@@ -4,8 +4,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
-#include <limits>
 #include "Order.h"
 #include "Appetiser.h"
 #include "Util.h"
@@ -40,12 +38,14 @@ double Order::calculateTotal() const {
     std::vector<Item *> twoForOneItems;
 
     for (Item *item: itemList) {
-        if (auto *t = dynamic_cast<Appetiser *>(item)) {
-            if (t->isTwoForOne()) {
+
+        if(item->getType() == ItemType::APPETISER) {
+            if(dynamic_cast<Appetiser *>(item)->isTwoForOne()) {
                 twoForOneItems.push_back(item);
                 continue;
             }
         }
+
         nonTwoForOneItems.push_back(item);
     }
 
@@ -89,8 +89,6 @@ double Order::calculateSavings() const {
 void Order::printReceipt() const {
     std::ofstream receiptFile;
     receiptFile.open("receipt.txt");
-
-    // Print the toString method to the file
 
     receiptFile << toString();
 

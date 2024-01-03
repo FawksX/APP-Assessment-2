@@ -6,12 +6,13 @@
 #include "Appetiser.h"
 #include "Beverage.h"
 #include "MainCourse.h"
+#include "Util.h"
 
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <unordered_map>
 #include <functional>
+#include <map>
 
 Menu::Menu(const std::string &filePath) {
 
@@ -20,47 +21,66 @@ Menu::Menu(const std::string &filePath) {
 
     while (std::getline(file, line)) {
         std::istringstream iss(line);
-
         std::vector<std::string> itemResult;
+
         while (std::getline(iss, line, ',')) {
             itemResult.push_back(line);
         }
 
-        std::string itemType = itemResult[0];
+        if (itemResult.size() < 4) {
+            // Invalid item format, handle appropriately
+            std::cerr << "Invalid item format: " << line << std::endl;
+            continue;
+        }
+
+        ItemType itemType = Util::parseItemType(itemResult[0]);
         std::string name = itemResult[1];
         double price = std::stod(itemResult[2]);
         double calories = std::stod(itemResult[3]);
 
-        Item *newItem = nullptr;
-
-        if (itemType == "m") {
-            newItem = createMainCourse(name, price, calories);
-        } else if (itemType == "a") {
-
-            bool shareable = itemResult[4] == "y";
-            bool twoForOne = itemResult[5] == "y";
-
-            newItem = createAppetiser(name, price, calories, shareable, twoForOne);
-        } else if (itemType == "b") {
-
-            double volume = std::stod(itemResult[6]);
-            double abv = std::stod(itemResult[7]);
-
-            newItem = createBeverage(name, price, calories, abv, volume);
-        } else {
-            std::cerr << "Unsupported item type: " << itemType << std::endl;
-        }
+        Item* newItem = createItem(itemType, name, price, calories, itemResult);
 
         if (newItem) {
             itemList.push_back(newItem);
+        } else {
+            std::cerr << "Failed to create item: " << line << std::endl;
         }
     }
 
     // Order the list by Appetisers, Main Courses, Beverages
-    std::sort(itemList.begin(), itemList.end(), [](Item *a, Item *b) {
+    std::sort(itemList.begin(), itemList.end(), [](Item* a, Item* b) {
         return a->getType() < b->getType();
     });
 
+}
+
+Item* Menu::createItem(const ItemType itemType, const std::string& name, double price, double calories, const std::vector<std::string>& params) {
+
+    switch (itemType) {
+        case ItemType::MAIN_COURSE:
+            return new MainCourse(name, calories, price);
+
+        case ItemType::APPETISER:
+            return new Appetiser(
+                    name,
+                    calories,
+                    price,
+                    params[4] == "y",
+                    params[5] == "y"
+                    );
+
+        case ItemType::BEVERAGE:
+            return new Beverage(
+                    name,
+                    calories,
+                    price,
+                    Util::parseNumber(params[7], 0),
+                    Util::parseNumber(params[6], 0)
+                    );
+
+        default:
+            return nullptr;
+    }
 }
 
 // Destroyed in ItemList... no need to worry for now
@@ -73,26 +93,29 @@ std::string Menu::toString() const {
     // Item list is sorted appetisers, main courses, beverages, print out the list and insert headings when the type changes
     result << "Menu:\n";
 
-    std::string currentType;
+    ItemType currentType;
 
     for (int i = 0; i < itemList.size(); i++) {
         Item *item = itemList[i];
 
-        if (auto *t = dynamic_cast<Appetiser *>(item)) {
-            if (currentType != "Appetisers") {
-                result << "\nAppetisers:\n";
-                currentType = "Appetisers";
+        ItemType itemType = item->getType();
+
+        if (itemType != currentType) {
+            result << "\n";
+            switch (itemType) {
+                case ItemType::APPETISER:
+                    result << "Appetisers:\n";
+                    break;
+                case ItemType::MAIN_COURSE:
+                    result << "Main Courses:\n";
+                    break;
+                case ItemType::BEVERAGE:
+                    result << "Beverages:\n";
+                    break;
+                default:
+                    break;
             }
-        } else if (auto *t = dynamic_cast<MainCourse *>(item)) {
-            if (currentType != "Main Courses") {
-                result << "\nMain Courses:\n";
-                currentType = "Main Courses";
-            }
-        } else if (auto *t = dynamic_cast<Beverage *>(item)) {
-            if (currentType != "Beverages") {
-                result << "\nBeverages:\n";
-                currentType = "Beverages";
-            }
+            currentType = itemType;
         }
 
         result << i + 1 << ". " << item->toString() << "\n";
@@ -112,6 +135,7 @@ void Menu::sortByPrice(bool ascending) {
             return false; // don't swap categories
         }
 
+
     };
 
     std::sort(itemList.begin(), itemList.end(), compareByCategoryAndPrice);
@@ -123,16 +147,4 @@ Item *Menu::getItem(int position) const {
     } else {
         return nullptr;
     }
-}
-
-Item *Menu::createMainCourse(const std::string &name, double price, double calories) {
-    return new MainCourse(name, calories, price);
-}
-
-Item *Menu::createAppetiser(const std::string &name, double price, double calories, bool shareable, bool twoForOne) {
-    return new Appetiser(name, calories, price, shareable, twoForOne);
-}
-
-Item *Menu::createBeverage(const std::string &name, double price, double calories, double abv, double volume) {
-    return new Beverage(name, calories, price, abv, volume);
 }

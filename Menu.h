@@ -25,11 +25,7 @@ public:
 
 private:
 
-    static Item* createMainCourse(const std::string& name, double price, double calories);
-
-    static Item* createAppetiser(const std::string& name, double price, double calories, bool shareable, bool twoForOne);
-
-    static Item* createBeverage(const std::string& name, double price, double calories, double abv, double volume);
+    static Item* createItem(const ItemType itemType, const std::string& name, double price, double calories, const std::vector<std::string>& params);
 
 };
 
