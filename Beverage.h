@@ -11,35 +11,35 @@
 /**
  * @brief Represents a drink takeaway item
  */
-class Beverage : public Item {
+class Beverage : public Item
+{
 
-private:
-    double abv;
-    double volume;
+ private:
+	double abv;
+	double volume;
 
-public:
+ public:
 
-    Beverage(
-            const std::string &itemName,
-            double itemCalories,
-            double itemPrice,
-            double abv,
-            double volume
-    );
+	Beverage(
+		const std::string& itemName,
+		double itemCalories,
+		double itemPrice,
+		double abv,
+		double volume
+	);
 
-    Beverage(const Beverage &other);
+	Beverage(const Beverage& other);
 
-    ~Beverage() override;
+	~Beverage() override;
 
-    [[nodiscard]] double getAbv() const;
+	[[nodiscard]] double getAbv() const;
 
-    [[nodiscard]] double getVolume() const;
+	[[nodiscard]] double getVolume() const;
 
-    [[nodiscard]] std::string toString() const override;
+	[[nodiscard]] std::string toString() const override;
 
-    ItemType getType() const override;
+	ItemType getType() const override;
 
 };
-
 
 #endif //APP_ASSESSMENT_2_BEVERAGE_H

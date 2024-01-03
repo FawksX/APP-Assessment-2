@@ -5,10 +5,11 @@
 #ifndef APP_ASSESSMENT_2_ITEMTYPE_H
 #define APP_ASSESSMENT_2_ITEMTYPE_H
 
-enum class ItemType {
-    APPETISER,
-    MAIN_COURSE,
-    BEVERAGE
+enum class ItemType
+{
+	APPETISER,
+	MAIN_COURSE,
+	BEVERAGE
 };
 
 #endif //APP_ASSESSMENT_2_ITEMTYPE_H

@@ -11,48 +11,49 @@
 /**
  * @brief Represents any takeaway item.
  */
-class Item {
+class Item
+{
 
-private:
-    std::string name;
-    double calories;
-    double price;
+ private:
+	std::string name;
+	double calories;
+	double price;
 
-public:
+ public:
 
-    Item(
-            std::string  itemName,
-            double itemCalories,
-            double itemPrice
-    );
+	Item(
+		std::string itemName,
+		double itemCalories,
+		double itemPrice
+	);
 
-    virtual ~Item();
+	virtual ~Item();
 
-    /**
-     * @brief Gets the name of the takeaway item
-     * @return The name of the item
-     */
-    [[nodiscard]] std::string getName() const;
+	/**
+	 * @brief Gets the name of the takeaway item
+	 * @return The name of the item
+	 */
+	[[nodiscard]] std::string getName() const;
 
-    /**
-     * @brief Gets the calories of the takeaway item
-     * @return The calories of the takeaway item
-     */
-    [[nodiscard]] double getCalories() const;
+	/**
+	 * @brief Gets the calories of the takeaway item
+	 * @return The calories of the takeaway item
+	 */
+	[[nodiscard]] double getCalories() const;
 
-    /**
-     * @brief Gets the price of the takeaway item
-     * @return The price of the takeaway item
-     */
-    [[nodiscard]] double getPrice() const;
+	/**
+	 * @brief Gets the price of the takeaway item
+	 * @return The price of the takeaway item
+	 */
+	[[nodiscard]] double getPrice() const;
 
-    [[nodiscard]] virtual std::string toString() const = 0;
+	[[nodiscard]] virtual std::string toString() const = 0;
 
-    bool operator>(const Item& other) const;
+	bool operator>(const Item& other) const;
 
-    bool operator<(const Item& other) const;
+	bool operator<(const Item& other) const;
 
-    virtual ItemType getType() const = 0;
+	virtual ItemType getType() const = 0;
 
 };
 

@@ -10,19 +10,19 @@
 
 #include "Item.h"
 
-class ItemList {
-public:
+class ItemList
+{
+ public:
 
-    ItemList();
+	ItemList();
 
-    ~ItemList();
+	~ItemList();
 
-    [[nodiscard]] virtual std::string toString() const = 0;
+	[[nodiscard]] virtual std::string toString() const = 0;
 
-protected:
-    // Vector of pointers to instances of the Item class
-    std::vector<Item*> itemList;
+ protected:
+	// Vector of pointers to instances of the Item class
+	std::vector<Item*> itemList;
 };
-
 
 #endif //APP_ASSESSMENT_2_ITEMLIST_H

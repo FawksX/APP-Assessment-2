@@ -7,8 +7,10 @@
 
 ItemList::ItemList() = default;
 
-ItemList::~ItemList() {
-    for (Item* item : itemList) {
-        delete item;
-    }
+ItemList::~ItemList()
+{
+	for (Item* item : itemList)
+	{
+		delete item;
+	}
 }

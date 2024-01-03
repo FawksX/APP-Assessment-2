@@ -9,31 +9,37 @@
 #include "Item.h"
 
 Item::Item(
-        std::string itemName,
-        double itemCalories,
-        double itemPrice
-) : name(std::move(itemName)), calories(itemCalories), price(itemPrice) {
+	std::string itemName,
+	double itemCalories,
+	double itemPrice
+) : name(std::move(itemName)), calories(itemCalories), price(itemPrice)
+{
 
 };
 
 Item::~Item() = default;
 
-std::string Item::getName() const {
-    return name;
+std::string Item::getName() const
+{
+	return name;
 }
 
-double Item::getCalories() const {
-    return calories;
+double Item::getCalories() const
+{
+	return calories;
 }
 
-double Item::getPrice() const {
-    return price;
+double Item::getPrice() const
+{
+	return price;
 }
 
-bool Item::operator>(const Item &other) const {
-    return price > other.price;
+bool Item::operator>(const Item& other) const
+{
+	return price > other.price;
 }
 
-bool Item::operator<(const Item &other) const {
-    return price < other.price;
+bool Item::operator<(const Item& other) const
+{
+	return price < other.price;
 }

@@ -8,24 +8,24 @@
 #include "Item.h"
 #include <string>
 
-class MainCourse : public Item {
+class MainCourse : public Item
+{
 
-public:
+ public:
 
-    MainCourse(
-            const std::string &itemName,
-            double itemCalories,
-            double itemPrice
-    );
+	MainCourse(
+		const std::string& itemName,
+		double itemCalories,
+		double itemPrice
+	);
 
-    MainCourse(const MainCourse &other);
+	MainCourse(const MainCourse& other);
 
-    ~MainCourse() override;
+	~MainCourse() override;
 
-    [[nodiscard]] std::string toString() const override;
+	[[nodiscard]] std::string toString() const override;
 
-    ItemType getType() const override;
+	ItemType getType() const override;
 };
-
 
 #endif //APP_ASSESSMENT_2_MAINCOURSE_H
