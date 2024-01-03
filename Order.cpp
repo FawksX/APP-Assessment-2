@@ -21,7 +21,7 @@ std::string Order::toString() const
 
 	for (int i = 0; i < itemList.size(); i++)
 	{
-		result << std::to_string(i + 1) << ". " << itemList[i] << "\n";
+		result << std::to_string(i + 1) << ". " << *itemList[i] << "\n";
 	}
 
 	result << "\nSavings: £" << Util::parseNumber(calculateSavings()) << "\n";
