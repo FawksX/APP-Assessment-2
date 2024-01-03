@@ -2,6 +2,7 @@
 // Created by olive on 24/12/2023.
 //
 
+#include <sstream>
 #include "Appetiser.h"
 #include "Util.h"
 
@@ -30,20 +31,22 @@ bool Appetiser::isTwoForOne() const
 
 std::string Appetiser::toString() const
 {
-	std::string
-		string = getName() + ": £" + Util::parseNumber(getPrice()) + ", " + Util::parseNumber(getCalories()) + " cal";
+
+	std::ostringstream result;
+
+	result << getName() << ": £" << Util::parseNumber(getPrice()) << ", " << Util::parseNumber(getCalories()) << " cal";
 
 	if (isShareable())
 	{
-		string += " (shareable) ";
+		result << " (shareable) ";
 	}
 
 	if (isTwoForOne())
 	{
-		string += " (2-4-1)";
+		result << " (2-4-1)";
 	}
 
-	return string;
+	return result.str();
 }
 
 ItemType Appetiser::getType() const

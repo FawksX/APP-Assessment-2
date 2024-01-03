@@ -2,6 +2,7 @@
 // Created by olive on 25/12/2023.
 //
 
+#include <sstream>
 #include "Beverage.h"
 #include "Util.h"
 
@@ -31,19 +32,21 @@ double Beverage::getVolume() const
 std::string Beverage::toString() const
 {
 
-	std::string string =
-		getName() + ": £" + Util::parseNumber(getPrice()) + ", " +
-			Util::parseNumber(getCalories()) + " cal (" +
-			Util::parseNumber(getVolume()) + "ml";
+	std::ostringstream result;
+
+	result <<
+		   getName() << ": £" << Util::parseNumber(getPrice()) << ", " <<
+		   Util::parseNumber(getCalories()) << " cal (" <<
+		   Util::parseNumber(getVolume()) << "ml";
 
 	if (getAbv() > 0)
 	{
-		string += ", " + Util::parseNumber(getAbv()) + "% abv";
+		result << ", " << Util::parseNumber(getAbv()) << "% abv";
 	}
 
-	string += ")";
+	result << ")";
 
-	return string;
+	return result.str();
 }
 
 ItemType Beverage::getType() const

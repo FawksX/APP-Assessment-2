@@ -2,8 +2,6 @@
 // Created by olive on 24/12/2023.
 //
 
-#include <sstream>
-#include <iomanip>
 #include <iostream>
 #include <utility>
 #include "Item.h"
@@ -42,4 +40,10 @@ bool Item::operator>(const Item& other) const
 bool Item::operator<(const Item& other) const
 {
 	return price < other.price;
+}
+
+std::ostream& operator<<(std::ostream& os, const Item& item)
+{
+	os << item.toString();
+	return os;
 }

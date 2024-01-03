@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include "Order.h"
 #include "Appetiser.h"
 #include "Util.h"
@@ -14,19 +15,19 @@ Order::~Order() = default;
 
 std::string Order::toString() const
 {
-	std::string orderString;
+	std::ostringstream result;
 
-	orderString += "Order:\n";
+	result << "Order:\n";
 
 	for (int i = 0; i < itemList.size(); i++)
 	{
-		orderString += std::to_string(i + 1) + ". " + itemList[i]->toString() + "\n";
+		result << std::to_string(i + 1) << ". " << itemList[i] << "\n";
 	}
 
-	orderString += "\nSavings: £" + Util::parseNumber(calculateSavings()) + "\n";
-	orderString += "Total: £" + Util::parseNumber(calculateTotal()) + "\n";
+	result << "\nSavings: £" << Util::parseNumber(calculateSavings()) << "\n";
+	result << "Total: £" << Util::parseNumber(calculateTotal()) << "\n";
 
-	return orderString;
+	return result.str();
 }
 
 /**

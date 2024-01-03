@@ -90,18 +90,18 @@ int main()
 				break;
 			case 2:
 				menu.sortByPrice(true);
-				cout << "Menu sorted by price in ascending order:\n" << menu.toString();
+				cout << "Menu sorted by price in ascending order:\n";
 				break;
 			case 3:
 				menu.sortByPrice(false);
-				cout << "Menu sorted by price in descending order:\n" << menu.toString();
+				cout << "Menu sorted by price in descending order:\n";
 				break;
 			default:
 				cout << "Invalid option. Returning to main menu!\n";
 				break;  // Repeat the loop for a valid option
 			}
 
-			cout << menu.toString() << endl;
+			cout << menu << endl;
 
 		}
 		else if (command == "add")

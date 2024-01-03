@@ -42,13 +42,6 @@ Menu::Menu(const std::string& filePath)
 		double price = Util::parseNumber(itemResult[2], 0);
 		double calories = Util::parseNumber(itemResult[3], 0);
 
-		// If either price or calories are 0, then the item is invalid
-		if (price == 0 || calories == 0)
-		{
-			std::cerr << "Invalid item format: " << line << std::endl;
-			continue;
-		}
-
 		Item* newItem = createItem(itemType, name, price, calories, itemResult);
 
 		if (newItem)
@@ -108,7 +101,7 @@ std::string Menu::toString() const
 			currentType = itemType;
 		}
 
-		result << i + 1 << ". " << item->toString() << "\n";
+		result << i + 1 << ". " << *item << "\n";
 	}
 
 	return result.str();
@@ -146,6 +139,13 @@ void Menu::sortByPrice(bool ascending)
 
 	std::sort(itemList.begin(), itemList.end(), compareByCategoryAndPrice);
 }
+
+std::ostream& operator<<(std::ostream& os, const Menu& menu)
+{
+	os << menu.toString();
+	return os;
+}
+
 
 Item* Menu::createItem(const ItemType itemType,
 	const std::string& name,

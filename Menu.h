@@ -46,6 +46,14 @@ class Menu : public ItemList
 	 */
 	void sortByPrice(bool ascending = true);
 
+	/**
+	 * @brief Outputs the takeaway item to the output stream to allow for appending
+	 * @param os The output stream to output to
+	 * @param item The takeaway item to output
+	 * @return The output stream
+	 */
+	friend std::ostream& operator<<(std::ostream& os, const Menu& menu);
+
  private:
 
 	/**
