@@ -28,17 +28,32 @@ class Beverage : public Item
 		double volume
 	);
 
-	Beverage(const Beverage& other);
-
 	~Beverage() override;
 
+	/**
+	 * @brief Get the alcohol by volume of the beverage
+	 * @return The alcohol by volume of the beverage as a double
+	 */
 	[[nodiscard]] double getAbv() const;
 
+	/**
+	 * @brief Get the volume of the beverage
+	 * @return The volume of the beverage as a double
+	 */
 	[[nodiscard]] double getVolume() const;
 
+/**
+	 * @brief Get a string representation of the Beverage for the menu. This formats
+	 * The name, price, calories, volume and abv (if present) for reading by the user.
+	 * @return A string representation of the beverage
+	 */
 	[[nodiscard]] std::string toString() const override;
 
-	ItemType getType() const override;
+	/**
+	 * @brief Gets the ItemType associated with the Beverage
+	 * @return The ItemType for Beverage
+	 */
+	[[nodiscard]] ItemType getType() const override;
 
 };
 

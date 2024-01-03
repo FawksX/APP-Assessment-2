@@ -86,7 +86,7 @@ int main()
 			switch (option)
 			{
 			case 1:
-				// do nothing - Executed below, just for intuitiveness
+				// do nothing - Executed below, just for intuitiveness for the user.
 				break;
 			case 2:
 				menu.sortByPrice(true);

@@ -14,8 +14,6 @@ MainCourse::MainCourse(
 
 }
 
-MainCourse::MainCourse(const MainCourse& other) = default;
-
 MainCourse::~MainCourse() = default;
 
 std::string MainCourse::toString() const

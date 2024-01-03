@@ -14,9 +14,7 @@ Appetiser::Appetiser(
 ) : Item(itemName, itemCalories, itemPrice), twoForOne(twoForOne), shareable(shareable)
 {
 
-};
-
-Appetiser::Appetiser(const Appetiser& other) = default;
+}
 
 Appetiser::~Appetiser() = default;
 

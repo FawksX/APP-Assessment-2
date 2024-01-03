@@ -32,15 +32,22 @@ Menu::Menu(const std::string& filePath)
 
 		if (itemResult.size() < 4)
 		{
-			// Invalid item format, handle appropriately
+			// Invalid item format, send an error msg and continue
 			std::cerr << "Invalid item format: " << line << std::endl;
 			continue;
 		}
 
 		ItemType itemType = Util::parseItemType(itemResult[0]);
 		std::string name = itemResult[1];
-		double price = std::stod(itemResult[2]);
-		double calories = std::stod(itemResult[3]);
+		double price = Util::parseNumber(itemResult[2], 0);
+		double calories = Util::parseNumber(itemResult[3], 0);
+
+		// If either price or calories are 0, then the item is invalid
+		if (price == 0 || calories == 0)
+		{
+			std::cerr << "Invalid item format: " << line << std::endl;
+			continue;
+		}
 
 		Item* newItem = createItem(itemType, name, price, calories, itemResult);
 
@@ -62,42 +69,7 @@ Menu::Menu(const std::string& filePath)
 
 }
 
-Item* Menu::createItem(const ItemType itemType,
-	const std::string& name,
-	double price,
-	double calories,
-	const std::vector<std::string>& params)
-{
-
-	switch (itemType)
-	{
-	case ItemType::MAIN_COURSE:
-		return new MainCourse(name, calories, price);
-
-	case ItemType::APPETISER:
-		return new Appetiser(
-			name,
-			calories,
-			price,
-			params[4] == "y",
-			params[5] == "y"
-		);
-
-	case ItemType::BEVERAGE:
-		return new Beverage(
-			name,
-			calories,
-			price,
-			Util::parseNumber(params[7], 0),
-			Util::parseNumber(params[6], 0)
-		);
-
-	default:
-		return nullptr;
-	}
-}
-
-// Destroyed in ItemList... no need to worry for now
+// Destroyed in ItemList... no need to worry about it here
 Menu::~Menu() = default;
 
 std::string Menu::toString() const
@@ -143,6 +115,18 @@ std::string Menu::toString() const
 
 }
 
+Item* Menu::getItem(int position) const
+{
+	if (position - 1 < itemList.size())
+	{
+		return itemList[position - 1];
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
 void Menu::sortByPrice(bool ascending)
 {
 	auto compareByCategoryAndPrice = [ascending](Item* a, Item* b)
@@ -163,14 +147,37 @@ void Menu::sortByPrice(bool ascending)
 	std::sort(itemList.begin(), itemList.end(), compareByCategoryAndPrice);
 }
 
-Item* Menu::getItem(int position) const
+Item* Menu::createItem(const ItemType itemType,
+	const std::string& name,
+	double price,
+	double calories,
+	const std::vector<std::string>& params)
 {
-	if (position - 1 < itemList.size())
+
+	switch (itemType)
 	{
-		return itemList[position - 1];
-	}
-	else
-	{
+	case ItemType::MAIN_COURSE:
+		return new MainCourse(name, calories, price);
+
+	case ItemType::APPETISER:
+		return new Appetiser(
+			name,
+			calories,
+			price,
+			params[4] == "y",
+			params[5] == "y"
+		);
+
+	case ItemType::BEVERAGE:
+		return new Beverage(
+			name,
+			calories,
+			price,
+			Util::parseNumber(params[7], 0),
+			Util::parseNumber(params[6], 0)
+		);
+
+	default:
 		return nullptr;
 	}
 }

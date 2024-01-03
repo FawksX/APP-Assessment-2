@@ -14,9 +14,7 @@ Beverage::Beverage(
 ) : Item(itemName, itemCalories, itemPrice), abv(abv), volume(volume)
 {
 
-};
-
-Beverage::Beverage(const Beverage& other) = default;
+}
 
 Beverage::~Beverage() = default;
 

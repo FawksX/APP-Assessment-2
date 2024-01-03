@@ -7,6 +7,9 @@
 
 #include "ItemList.h"
 
+/**
+ * @brief Represents an order made by a user of the app.
+ */
 class Order : public ItemList
 {
 
@@ -18,22 +21,28 @@ class Order : public ItemList
 
 	/**
 	 * @brief Displays the items in the order, along with the total price and the savings made.
-	 * @return
+	 * @return A string representation of the order.
 	 */
 	[[nodiscard]] std::string toString() const override;
 
 	/**
 	 * @brief Calculates the total price of the order, respecting twoForOne offers in the order.
-	 * @return
+	 * and any savings made
+	 * @return The total price of the order as a double, payable by the user.
 	 */
 	[[nodiscard]] double calculateTotal() const;
 
 	/**
-	 * @brief Calculates the raw total of the order, excluding savings
-	 * @return
+	 * @brief Calculates the total price of the order, ignoring any
+	 * savings made by the user through two-for-one deals.
+	 * @return The total price of the order as a double, excluding savings
 	 */
 	[[nodiscard]] double calculateRawTotal() const;
 
+	/**
+	 * @brief Calculates the savings made by the user through two-for-one deals.
+	 * @return The savings made by the user as a double.
+	 */
 	[[nodiscard]] double calculateSavings() const;
 
 	/**
@@ -44,10 +53,23 @@ class Order : public ItemList
 	 */
 	void printReceipt() const;
 
+	/**
+	 * @brief Adds an item to the order
+	 * @param item The item to add to the order
+	 */
 	void add(Item* item);
 
+	/**
+	 * @brief Removes an item from the order
+	 * @param position The index of the item in the order to remove
+	 */
 	void remove(int position);
 
+	/**
+	 * @brief Gets the item at a specific index in the ItemList
+	 * @param position The position of the item to get
+	 * @return A pointer to the item at the specified position, or nullptr if the position is invalid
+	 */
 	[[nodiscard]] Item* getItem(int position) const;
 
 };

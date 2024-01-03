@@ -28,8 +28,6 @@ class Appetiser : public Item
 		bool twoForOne
 	);
 
-	Appetiser(const Appetiser& other);
-
 	~Appetiser() override;
 
 	/**
@@ -44,9 +42,18 @@ class Appetiser : public Item
 	 */
 	[[nodiscard]] bool isTwoForOne() const;
 
+	/**
+	 * @brief Gets a string representation of the Appetiser for the Menu. This formats
+	 * The name, price, calories and appetiser deals for reading by the user.
+	 * @return A string representation of the Appetiser
+	 */
 	[[nodiscard]] std::string toString() const override;
 
-	ItemType getType() const override;
+	/**
+	 * @brief Gets the ItemType associated with the Appetiser
+	 * @return The ItemType for Appetiser
+	 */
+	[[nodiscard]] ItemType getType() const override;
 
 };
 

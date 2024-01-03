@@ -8,6 +8,9 @@
 #include <string>
 #include "ItemType.h"
 
+/**
+ * @brief A namespace containing utility methods for the Takeaway App
+ */
 namespace Util
 {
 

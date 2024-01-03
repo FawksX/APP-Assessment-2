@@ -8,6 +8,9 @@
 #include "Item.h"
 #include <string>
 
+/**
+ * @brief Represents a main course takeaway item
+ */
 class MainCourse : public Item
 {
 
@@ -19,13 +22,20 @@ class MainCourse : public Item
 		double itemPrice
 	);
 
-	MainCourse(const MainCourse& other);
-
 	~MainCourse() override;
 
+	/**
+	 * @brief Gets a string representation of the Appetiser for the Menu. This formats
+	 * The name, price, calories for reading by the user.
+	 * @return A string representation of the Main Course
+	 */
 	[[nodiscard]] std::string toString() const override;
 
-	ItemType getType() const override;
+	/**
+	 * @brief Gets the ItemType associated with the Main Course
+	 * @return The ItemType for Main Course
+	 */
+	[[nodiscard]] ItemType getType() const override;
 };
 
 #endif //APP_ASSESSMENT_2_MAINCOURSE_H

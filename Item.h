@@ -30,6 +30,19 @@ class Item
 	virtual ~Item();
 
 	/**
+	 * @brief Converts the takeaway item to a human-readable string.
+	 * @attention This method is pure virtual and must be implemented by any derived classes.
+	 * @return A string representation of the takeaway item.
+	 */
+	[[nodiscard]] virtual std::string toString() const = 0;
+
+	/**
+	 * @brief Gets the type of the takeaway item
+	 * @return The type of the item
+	 */
+	[[nodiscard]] virtual ItemType getType() const = 0;
+
+	/**
 	 * @brief Gets the name of the takeaway item
 	 * @return The name of the item
 	 */
@@ -47,13 +60,21 @@ class Item
 	 */
 	[[nodiscard]] double getPrice() const;
 
-	[[nodiscard]] virtual std::string toString() const = 0;
-
+	/**
+	 * @brief Compares two takeaway items by price
+	 * @param other The other takeaway item to compare to
+	 * @return True if this takeaway item is more expensive than the other, otherwise false
+	 */
 	bool operator>(const Item& other) const;
 
+	/**
+	 * @brief Compares two takeaway items by price
+	 * @param other The other takeaway item to compare to
+	 * @return True if this takeaway item is less expensive than the other, otherwise false
+	 */
 	bool operator<(const Item& other) const;
 
-	virtual ItemType getType() const = 0;
+
 
 };
 

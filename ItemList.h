@@ -10,6 +10,9 @@
 
 #include "Item.h"
 
+/**
+ * @brief Represents a list of takeaway items.
+ */
 class ItemList
 {
  public:
@@ -18,6 +21,10 @@ class ItemList
 
 	~ItemList();
 
+	/**
+	 * @brief Represents a human-readable format of all the items in the list.
+	 * @return A string representation of the list of items.
+	 */
 	[[nodiscard]] virtual std::string toString() const = 0;
 
  protected:
