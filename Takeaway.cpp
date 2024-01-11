@@ -27,7 +27,6 @@ using namespace std;
 
 int main()
 {
-	// todo -> better way for utf8?
 	SetConsoleOutputCP(CP_UTF8);
 
 	string userCommand;
